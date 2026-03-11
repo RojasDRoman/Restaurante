@@ -1,13 +1,32 @@
 from tkinter import *
 from logica import *
 
+# Variables de la calculadora
+
+operador = ''
+
 def App():
+
+    # Funcion llamada al oprimir boton de la calculadora
+
+    def click_boton(boton):
+        global operador
+        visor_calculadora.delete(0, END)
+        if boton == 'CE':
+            operador = ''
+        elif boton == '=':
+            resultado = str(eval(operador))
+            visor_calculadora.insert(END, resultado)
+            operador = ''
+        else:
+            operador = operador + boton
+            visor_calculadora.insert(END, operador) 
 
     # Iniciar a tkinter
     ventana = Tk()
 
     # Tamaño de la ventana y evitar que se pueda maximizar
-    ventana.geometry('1020x630+400+200')
+    ventana.geometry('1300x630+400+200')
     ventana.resizable(0, 0)
 
     # Titulo e icono de la ventana
@@ -274,6 +293,43 @@ def App():
                               relief = FLAT, 
                               bg = 'burlywood')
     panel_calculadora.pack()
+
+    # Calculadora
+    visor_calculadora = Entry(panel_calculadora,
+                              font = ('Dosis', 16, 'bold'),
+                              width = 32,
+                              bd = 1)
+    visor_calculadora.grid(row = 0,
+                           column = 0,
+                           columnspan = 4)
+    
+    botones_calculadora = ['7','8','9','+',
+                           '4','5','6','-',
+                           '1','2','3','*',
+                           '=','CE','0','/']
+    
+    fila = 1
+    columna = 0
+
+    for boton in botones_calculadora:
+        boton = Button(panel_calculadora,
+                       text = boton,
+                       font = ('Dosis', 16, 'bold'),
+                       fg = 'white',
+                       bg = 'azure4',
+                       bd = 1,
+                       width = 8,
+                       command = lambda valor=boton: click_boton(valor))
+        boton.grid(row = fila,
+                   column = columna)
+        
+        if columna == 3:
+            fila += 1
+        
+        columna += 1
+
+        if columna == 4:
+            columna = 0
     
     # Panel drecho > panel recibo
     panel_recibo = Frame(panel_derecho, 
@@ -282,12 +338,34 @@ def App():
                          bg = 'burlywood')
     panel_recibo.pack()
 
+    # Area de recibo
+    texto_recibo = Text(panel_recibo,
+                        font = ('Dosis', 12, 'bold'),
+                        bd = 1,
+                        width = 42,
+                        height = 10)
+    texto_recibo.grid(row = 0,
+                      column = 0)
+
     # Panel drecho > panel botones
     panel_botones = Frame(panel_derecho, 
                          bd = 1, 
                          relief = FLAT, 
                          bg = 'burlywood')
     panel_botones.pack()
+
+    # Botones
+    botones = ['Total','Recibo','Guardar','Resetear']
+    for n, boton in enumerate(botones):
+        boton = Button(panel_botones,
+                       text = boton,
+                       font = ('Dosis',14,'bold'),
+                       fg = 'white',
+                       bg = 'azure4',
+                       bd = 1,
+                       width = 9)
+        boton.grid(row = 0,
+                   column = n)
 
     # Main loop de la pantalla
     ventana.mainloop()
