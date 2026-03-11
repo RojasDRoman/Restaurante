@@ -35,8 +35,114 @@ def App():
     # Panel izquierdo > panel costos
     panel_costos = Frame(panel_izquierdo,
                          bd = 1,
-                         relief = FLAT)
+                         relief = FLAT,
+                         bg = 'azure4',
+                         padx = 50)
     panel_costos.pack(side = BOTTOM)
+
+    # Etiquetas de costos y campos de entrada
+    var_costo_comida = StringVar()
+    var_costo_bebida = StringVar()
+    var_costo_postres = StringVar()
+    var_subtotal = StringVar()
+    var_impuesto = StringVar()
+    var_total = StringVar()
+
+    # Comida
+    etiqueta_costo_comida = Label(panel_costos,
+                                  text = 'Costo Comida',
+                                  font = ('Dosis',12,'bold'),
+                                  bg = 'azure4',
+                                  fg = 'white')
+    etiqueta_costo_comida.grid(row = 0, column = 0, padx = 40)
+
+    texto_costo_comida = Entry(panel_costos,
+                               font = ('Dosis',12,'bold'),
+                               bd = 1,
+                               width = 10,
+                               state = 'readonly',
+                               textvariable = var_costo_comida)
+    texto_costo_comida.grid(row = 0, column = 1, padx = 40)
+
+    # Bebida
+    etiqueta_costo_bebida = Label(panel_costos,
+                                  text = 'Costo Bebida',
+                                  font = ('Dosis',12,'bold'),
+                                  bg = 'azure4',
+                                  fg = 'white')
+    etiqueta_costo_bebida.grid(row = 1, column = 0, padx = 40)
+
+    texto_costo_bebida = Entry(panel_costos,
+                               font = ('Dosis',12,'bold'),
+                               bd = 1,
+                               width = 10,
+                               state = 'readonly',
+                               textvariable = var_costo_bebida)
+    texto_costo_bebida.grid(row = 1, column = 1, padx = 40)
+
+    # Postres
+    etiqueta_costo_postres = Label(panel_costos,
+                                  text = 'Costo Postres',
+                                  font = ('Dosis',12,'bold'),
+                                  bg = 'azure4',
+                                  fg = 'white')
+    etiqueta_costo_postres.grid(row = 2, column = 0, padx = 40)
+
+    texto_costo_postres = Entry(panel_costos,
+                               font = ('Dosis',12,'bold'),
+                               bd = 1,
+                               width = 10,
+                               state = 'readonly',
+                               textvariable = var_costo_postres)
+    texto_costo_postres.grid(row = 2, column = 1, padx = 40)
+
+    # Subtotal
+    etiqueta_subtotal = Label(panel_costos,
+                                  text = 'Subtotal',
+                                  font = ('Dosis',12,'bold'),
+                                  bg = 'azure4',
+                                  fg = 'white')
+    etiqueta_subtotal.grid(row = 0, column = 2, padx = 40)
+
+    texto_subtotal = Entry(panel_costos,
+                               font = ('Dosis',12,'bold'),
+                               bd = 1,
+                               width = 10,
+                               state = 'readonly',
+                               textvariable = var_subtotal)
+    texto_subtotal.grid(row = 0, column = 3, padx = 40)
+
+    # Impuesto
+    etiqueta_impuesto = Label(panel_costos,
+                                  text = 'Impuesto',
+                                  font = ('Dosis',12,'bold'),
+                                  bg = 'azure4',
+                                  fg = 'white')
+    etiqueta_impuesto.grid(row = 1, column = 2, padx = 40)
+
+    texto_impuesto = Entry(panel_costos,
+                               font = ('Dosis',12,'bold'),
+                               bd = 1,
+                               width = 10,
+                               state = 'readonly',
+                               textvariable = var_impuesto)
+    texto_impuesto.grid(row = 1, column = 3, padx = 40)
+
+    # Total
+    etiqueta_total = Label(panel_costos,
+                                  text = 'Total',
+                                  font = ('Dosis',12,'bold'),
+                                  bg = 'azure4',
+                                  fg = 'white')
+    etiqueta_total.grid(row = 2, column = 2, padx = 40)
+
+    texto_total = Entry(panel_costos,
+                               font = ('Dosis',12,'bold'),
+                               bd = 1,
+                               width = 10,
+                               state = 'readonly',
+                               textvariable = var_total)
+    texto_total.grid(row = 2, column = 3, padx = 40)
 
     # Panel izquierdo > panel comidas
     panel_comidas = LabelFrame(panel_izquierdo,
@@ -64,6 +170,8 @@ def App():
         # Crear los cuadros de entrada
         cuadros_comida.append('')
         texto_comida.append('')
+        texto_comida[n] = StringVar()
+        texto_comida[n].set('0')
         cuadros_comida[n] = Entry(panel_comidas,
                                   font = ('Dosis', 18, 'bold'),
                                   bd = 1,
@@ -98,6 +206,8 @@ def App():
         # Crear los cuadros de entrada
         cuadros_bebida.append('')
         texto_bebida.append('')
+        texto_bebida[n] = StringVar()
+        texto_bebida[n].set('0')
         cuadros_bebida[n] = Entry(panel_bebidas,
                                   font = ('Dosis', 18, 'bold'),
                                   bd = 1,
@@ -132,6 +242,8 @@ def App():
         # Crear los cuadros de entrada
         cuadros_postre.append('')
         texto_postre.append('')
+        texto_postre[n] = StringVar()
+        texto_postre[n].set('0')
         cuadros_postre[n] = Entry(panel_postres,
                                   font = ('Dosis', 18, 'bold'),
                                   bd = 1,
