@@ -1,11 +1,35 @@
 from tkinter import *
-from logica import *
 
 # Variables de la calculadora
 
 operador = ''
 
 def App():
+
+    # Lista de productos
+    lista_comidas = ['Pollo','Birria','Pescado','Menudo','Pozole',
+                    'Carnitas','Tacos','Tamales']
+    lista_bebidas = ['Agua','Coca-Cola','Mirinda','Jugo','Power',
+                    'Gatorade','Cerveza','Michelada']
+    lista_postres = ['Carlotta','Helado','Pastel','Chocoflan',
+                    'Galetina','Flan','Pay','Churros']
+    
+    precios_comida = [1.32,1.65,2.31,3.22,1.22,1.99,2.05,2.65]
+    precios_bebida = [0.25,0.99,1.21,1.54,1.08,1.10,2.00,1.58]
+    precios_postre = [1.54,1.68,1.32,1.97,2.55,2.14,1.94,1.74]
+
+    # Variables de los checkbuttons
+    variables_comida = []
+    variables_bebida = []
+    variables_postre = []
+
+    # Variables para la cantidad de comidas, bebidas y postres
+    cuadros_comida = []
+    texto_comida = []
+    cuadros_bebida = []
+    texto_bebida = []
+    cuadros_postre = []
+    texto_postre = []
 
     # Funcion llamada al oprimir boton de la calculadora
 
@@ -20,7 +44,83 @@ def App():
             operador = ''
         else:
             operador = operador + boton
-            visor_calculadora.insert(END, operador) 
+            visor_calculadora.insert(END, operador)
+    
+    # Funcion para habilitar las cantidades con los checkbuttons
+
+    def revisar_check():
+
+        # Revision de variables comida
+        for n, _ in enumerate(cuadros_comida):
+            if variables_comida[n].get() == 1:
+                cuadros_comida[n].config(state = NORMAL)
+                if  texto_comida[n].get() == '0':       
+                    cuadros_comida[n].delete(0, END)
+                    cuadros_comida[n].focus()
+            else:
+                cuadros_comida[n].config(state = DISABLED)
+                texto_comida[n].set('0') 
+
+        # Revision de variables bebida
+        for n, _ in enumerate(cuadros_bebida):
+            if variables_bebida[n].get() == 1:
+                cuadros_bebida[n].config(state = NORMAL)
+                if  texto_bebida[n].get() == '0':       
+                    cuadros_bebida[n].delete(0, END)
+                    cuadros_bebida[n].focus()
+            else:
+                cuadros_bebida[n].config(state = DISABLED)
+                texto_bebida[n].set('0') 
+
+        # Revision de variables postre
+        for n, _ in enumerate(cuadros_postre):
+            if variables_postre[n].get() == 1:
+                cuadros_postre[n].config(state = NORMAL)
+                if  texto_postre[n].get() == '0':       
+                    cuadros_postre[n].delete(0, END)
+                    cuadros_postre[n].focus()
+            else:
+                cuadros_postre[n].config(state = DISABLED)
+                texto_postre[n].set('0')     
+
+    # Funcion que actua con los botones de totales y recibo
+    def botones_totales(boton):
+
+        # Si se presiona el boton total
+        if boton == 'Total':
+
+            # Cuenta de la comida
+            sub_total_comida = 0
+            for n, cantidad in enumerate(texto_comida):
+                sub_total_comida = sub_total_comida + (float(cantidad.get()) * precios_comida[n]) 
+
+            # Cuenta de la bebida
+            sub_total_bebida = 0
+            for n, cantidad in enumerate(texto_bebida):
+                sub_total_bebida = sub_total_bebida + (float(cantidad.get()) * precios_bebida[n]) 
+
+            # Cuenta de la postre
+            sub_total_postre = 0
+            for n, cantidad in enumerate(texto_postre):
+                sub_total_postre = sub_total_postre + (float(cantidad.get()) * precios_postre[n]) 
+
+            # Subtotal de las tres categorias
+            subtotal = sub_total_comida + sub_total_bebida + sub_total_postre
+
+            # Impuestos del 7%
+            impuesto = subtotal * 0.1
+
+            # Total de la cuenta
+            total = subtotal + impuesto
+
+            # Asignacion a los cuadros de texto
+            var_costo_comida.set(f'${round(sub_total_comida,2)}')
+            var_costo_bebida.set(f'${round(sub_total_bebida,2)}')
+            var_costo_postre.set(f'${round(sub_total_postre,2)}')
+
+            var_subtotal.set(f'${round(subtotal,2)}')
+            var_impuesto.set(f'${round(impuesto,2)}')
+            var_total.set(f'${round(total,2)}')
 
     # Iniciar a tkinter
     ventana = Tk()
@@ -62,7 +162,7 @@ def App():
     # Etiquetas de costos y campos de entrada
     var_costo_comida = StringVar()
     var_costo_bebida = StringVar()
-    var_costo_postres = StringVar()
+    var_costo_postre = StringVar()
     var_subtotal = StringVar()
     var_impuesto = StringVar()
     var_total = StringVar()
@@ -112,7 +212,7 @@ def App():
                                bd = 1,
                                width = 10,
                                state = 'readonly',
-                               textvariable = var_costo_postres)
+                               textvariable = var_costo_postre)
     texto_costo_postres.grid(row = 2, column = 1, padx = 40)
 
     # Subtotal
@@ -174,7 +274,6 @@ def App():
 
     # Genera los items de las comidas
     for n, comida in enumerate(lista_comidas):
-
         # Crear los checkbutton
         variables_comida.append('')
         variables_comida[n] = IntVar()
@@ -183,7 +282,8 @@ def App():
                              font = ('Dosis', 19, 'bold'),
                              onvalue = 1,
                              offvalue = 0,
-                             variable = variables_comida[n])
+                             variable = variables_comida[n],
+                             command = revisar_check)
         comida.grid(row = n, column = 0, sticky = W)
 
         # Crear los cuadros de entrada
@@ -219,7 +319,8 @@ def App():
                              font = ('Dosis', 19, 'bold'),
                              onvalue = 1,
                              offvalue = 0,
-                             variable = variables_bebida[n])
+                             variable = variables_bebida[n],
+                             command = revisar_check)
         bebida.grid(row = n, column = 0, sticky = W)
 
         # Crear los cuadros de entrada
@@ -255,7 +356,8 @@ def App():
                              font = ('Dosis', 19, 'bold'),
                              onvalue = 1,
                              offvalue = 0,
-                             variable = variables_postre[n])
+                             variable = variables_postre[n],
+                             command = revisar_check)
         postre.grid(row = n, column = 0, sticky = W)
 
         # Crear los cuadros de entrada
@@ -270,18 +372,6 @@ def App():
                                   state = DISABLED,
                                   textvariable = texto_postre[n])
         cuadros_postre[n].grid(row = n, column = 1)
-
-     # Genera los items de las comidas
-    for n, comida in enumerate(lista_comidas):
-        variables_comida.append('')
-        variables_comida[n] = IntVar()
-        comida = Checkbutton(panel_comidas,
-                             text = comida,
-                             font = ('Dosis', 19, 'bold'),
-                             onvalue = 1,
-                             offvalue = 0,
-                             variable = variables_comida[n])
-        comida.grid(row = n, column = 0, sticky = W)
 
     # Configuracion y contenido del panel derecho
     panel_derecho = Frame(ventana, bd = 1, relief = FLAT)
@@ -363,7 +453,8 @@ def App():
                        fg = 'white',
                        bg = 'azure4',
                        bd = 1,
-                       width = 9)
+                       width = 9,
+                       command = lambda valor = boton: botones_totales(valor))
         boton.grid(row = 0,
                    column = n)
 
