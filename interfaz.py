@@ -1,4 +1,6 @@
 from tkinter import *
+import random
+import datetime
 
 # Variables de la calculadora
 
@@ -114,13 +116,65 @@ def App():
             total = subtotal + impuesto
 
             # Asignacion a los cuadros de texto
-            var_costo_comida.set(f'${round(sub_total_comida,2)}')
-            var_costo_bebida.set(f'${round(sub_total_bebida,2)}')
-            var_costo_postre.set(f'${round(sub_total_postre,2)}')
+            var_costo_comida.set(f'$ {round(sub_total_comida,2)}')
+            var_costo_bebida.set(f'$ {round(sub_total_bebida,2)}')
+            var_costo_postre.set(f'$ {round(sub_total_postre,2)}')
 
-            var_subtotal.set(f'${round(subtotal,2)}')
-            var_impuesto.set(f'${round(impuesto,2)}')
-            var_total.set(f'${round(total,2)}')
+            var_subtotal.set(f'$ {round(subtotal,2)}')
+            var_impuesto.set(f'$ {round(impuesto,2)}')
+            var_total.set(f'$ {round(total,2)}')
+        
+        # Si se presiona el boton recibo
+        elif boton == 'Recibo':
+            # Obtiene y agrega fecha hora y folio
+            texto_recibo.delete(1.0, END)
+            num_recibo = f'N# - {random.randint(1000, 9999)}'
+            fecha = datetime.datetime.now()
+            fecha_recibo = f'{fecha.day}/{fecha.month}/{fecha.year} - {fecha.hour}:{fecha.minute}'
+            texto_recibo.insert(END, f'Datos:\t{num_recibo}\t\t{fecha_recibo}\n')
+            texto_recibo.insert(END, f'*' * 63 + '\n')
+
+            # Agrega encabezados del recibo
+            texto_recibo.insert(END, 'Items\t\tCant.\tCosto Items\n')
+            texto_recibo.insert(END, f'-' * 75 + '\n')
+
+            # Agrega items de comida
+            for n, comida in enumerate(texto_comida):
+                if comida.get() != '0' and comida.get != '':
+                    texto_recibo.insert(END, f'{lista_comidas[n]}\t\t'
+                                             f'{comida.get()}\t'
+                                             f'$ {int(comida.get()) * precios_comida[n]}\n')
+                    
+            # Agrega items de bebida
+            for n, bebida in enumerate(texto_bebida):
+                if bebida.get() != '0' and bebida.get != '':
+                    texto_recibo.insert(END, f'{lista_bebidas[n]}\t\t'
+                                             f'{bebida.get()}\t'
+                                             f'$ {int(bebida.get()) * precios_bebida[n]}\n')
+            
+            # Agrega items de postre
+            for n, postre in enumerate(texto_postre):
+                if postre.get() != '0' and postre.get != '':
+                    texto_recibo.insert(END, f'{lista_postres[n]}\t\t'
+                                             f'{postre.get()}\t'
+                                             f'$ {int(postre.get()) * precios_postre[n]}\n')
+
+            # Agrega los subtotales
+            texto_recibo.insert(END, f'-' * 75 + '\n')
+            texto_recibo.insert(END, f' Costo de la comida: \t\t\t{var_costo_comida.get()}\n')
+            texto_recibo.insert(END, f' Costo de la bebida: \t\t\t{var_costo_bebida.get()}\n')
+            texto_recibo.insert(END, f' Costo del postre:   \t\t\t{var_costo_postre.get()}\n')
+
+            # Agrega el total 
+            texto_recibo.insert(END, f'-' * 75 + '\n')
+            texto_recibo.insert(END, f' Sub-total: \t\t\t{var_subtotal.get()}\n')
+            texto_recibo.insert(END, f' Impuestos: \t\t\t{var_impuesto.get()}\n')
+            texto_recibo.insert(END, f' Total:   \t\t\t{var_total.get()}\n')
+
+            # Cierre del recibo
+            texto_recibo.insert(END, f'*' * 63 + '\n')
+            texto_recibo.insert(END, f'Lo esperamos pronto')
+
 
     # Iniciar a tkinter
     ventana = Tk()
