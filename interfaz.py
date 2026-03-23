@@ -1,6 +1,7 @@
 from tkinter import *
 import random
 import datetime
+from tkinter import filedialog, messagebox
 
 # Variables de la calculadora
 
@@ -17,7 +18,7 @@ def App():
                     'Galetina','Flan','Pay','Churros']
     
     precios_comida = [1.32,1.65,2.31,3.22,1.22,1.99,2.05,2.65]
-    precios_bebida = [0.25,0.99,1.21,1.54,1.08,1.10,2.00,1.58]
+    precios_bebida = [0.25,2,1.21,1.54,1.08,1.10,2.00,1.58]
     precios_postre = [1.54,1.68,1.32,1.97,2.55,2.14,1.94,1.74]
 
     # Variables de los checkbuttons
@@ -175,6 +176,45 @@ def App():
             texto_recibo.insert(END, f'*' * 63 + '\n')
             texto_recibo.insert(END, f'Lo esperamos pronto')
 
+        # Si se presiona el boton de Guardar
+        elif boton == 'Guardar':
+            info_recibo = texto_recibo.get(1.0, END)
+            archivo = filedialog.asksaveasfile(mode = 'w', defaultextension = '.txt')
+            archivo.write(info_recibo)
+            archivo.close()
+            messagebox.showinfo('Informacion', ' Su recibo ha sido guardado')
+
+        # Si se presiona el boton de resetear
+        elif boton == 'Resetear':
+            texto_recibo.delete(0.1, END)
+
+            for texto in texto_comida:
+                texto.set('0')
+            for texto in texto_bebida:
+                texto.set('0')
+            for texto in texto_postre:
+                texto.set('0')
+
+            for cuadro in cuadros_comida:
+                cuadro.config(state=DISABLED)
+            for cuadro in cuadros_bebida:
+                cuadro.config(state=DISABLED)
+            for cuadro in cuadros_postre:
+                cuadro.config(state=DISABLED)
+
+            for v in variables_comida:
+                v.set(0)
+            for v in variables_bebida:
+                v.set(0)
+            for v in variables_postre:
+                v.set(0)
+
+            var_costo_comida.set('')
+            var_costo_bebida.set('')
+            var_costo_postre.set('')
+            var_subtotal.set('')
+            var_impuesto.set('')
+            var_total.set('')
 
     # Iniciar a tkinter
     ventana = Tk()
